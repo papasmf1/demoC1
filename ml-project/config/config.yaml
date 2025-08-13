@@ -1,0 +1,68 @@
+# ML Project Configuration
+
+# Data Configuration
+data:
+  raw_data_path: "data/raw/"
+  processed_data_path: "data/processed/"
+  features_path: "data/features/"
+  test_size: 0.2
+  validation_size: 0.1
+  random_state: 42
+
+# Model Configuration
+model:
+  algorithms:
+    - "random_forest"
+    - "xgboost"
+    - "lightgbm"
+    - "catboost"
+  
+  hyperparameters:
+    random_forest:
+      n_estimators: [100, 200, 300]
+      max_depth: [10, 20, 30]
+      min_samples_split: [2, 5, 10]
+    
+    xgboost:
+      n_estimators: [100, 200, 300]
+      max_depth: [3, 6, 9]
+      learning_rate: [0.01, 0.1, 0.2]
+    
+    lightgbm:
+      n_estimators: [100, 200, 300]
+      max_depth: [10, 20, 30]
+      learning_rate: [0.01, 0.1, 0.2]
+
+# Training Configuration
+training:
+  cv_folds: 5
+  scoring: "accuracy"  # or "roc_auc", "f1", etc.
+  n_trials: 100  # for optuna optimization
+  
+# Experiment Tracking
+experiment:
+  mlflow:
+    experiment_name: "ml_project_experiments"
+    tracking_uri: "file:./experiments/mlruns"
+    
+  wandb:
+    project: "ml-project"
+    entity: "your-username"  # 여기에 실제 username 입력
+
+# Visualization
+visualization:
+  figure_size: [12, 8]
+  style: "whitegrid"
+  palette: "Set2"
+  
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+# Paths
+paths:
+  models: "models/"
+  notebooks: "notebooks/"
+  src: "src/"
+  experiments: "experiments/"

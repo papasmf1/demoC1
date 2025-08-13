@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft HTML - 웹 기반 마인크래프트</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/blocks.css">
+    <link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+    <!-- 게임 컨테이너 -->
+    <div id="game-container">
+        <!-- 메인 메뉴 -->
+        <div id="main-menu" class="menu">
+            <div class="menu-content">
+                <h1 class="game-title">MINECRAFT<br><span class="subtitle">HTML Edition</span></h1>
+                <div class="menu-buttons">
+                    <button id="new-world-btn" class="menu-btn">새로운 세계</button>
+                    <button id="load-world-btn" class="menu-btn">세계 불러오기</button>
+                    <button id="settings-btn" class="menu-btn">설정</button>
+                    <button id="about-btn" class="menu-btn">정보</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 게임 화면 -->
+        <div id="game-screen" class="hidden">
+            <!-- 3D 월드 렌더링 영역 -->
+            <div id="world-container">
+                <canvas id="world-canvas"></canvas>
+            </div>
+
+            <!-- 크로스헤어 -->
+            <div id="crosshair">
+                <div class="crosshair-line horizontal"></div>
+                <div class="crosshair-line vertical"></div>
+            </div>
+
+            <!-- HUD -->
+            <div id="hud">
+                <!-- 핫바 (아이템 슬롯) -->
+                <div id="hotbar">
+                    <div class="hotbar-slot active" data-slot="0">
+                        <div class="item-icon" style="background-color: #7CB342; width: 24px; height: 24px; border: 1px solid #333;"></div>
+                        <span class="item-count">64</span>
+                    </div>
+                    <div class="hotbar-slot" data-slot="1">
+                        <div class="item-icon" style="background-color: #757575; width: 24px; height: 24px; border: 1px solid #333;"></div>
+                        <span class="item-count">64</span>
+                    </div>
+                    <div class="hotbar-slot" data-slot="2">
+                        <div class="item-icon" style="background-color: #8D6E63; width: 24px; height: 24px; border: 1px solid #333;"></div>
+                        <span class="item-count">64</span>
+                    </div>
+                    <div class="hotbar-slot" data-slot="3">
+                        <div class="item-icon" style="background-color: #8D6E63; width: 24px; height: 24px; border: 1px solid #333;"></div>
+                        <span class="item-count">64</span>
+                    </div>
+                    <div class="hotbar-slot" data-slot="4">
+                        <!-- 조약돌 블록 -->
+                    </div>
+                    <div class="hotbar-slot" data-slot="5"></div>
+                    <div class="hotbar-slot" data-slot="6"></div>
+                    <div class="hotbar-slot" data-slot="7"></div>
+                    <div class="hotbar-slot" data-slot="8"></div>
+                </div>
+
+                <!-- 상태 정보 -->
+                <div id="status-info">
+                    <div id="coordinates">XYZ: <span id="coord-x">0</span>, <span id="coord-y">64</span>, <span id="coord-z">0</span></div>
+                    <div id="fps-counter">FPS: <span id="fps-value">60</span></div>
+                    <div id="block-info">바라보는 블록: <span id="looking-block">없음</span></div>
+                </div>
+
+                <!-- 건강/허기 바 -->
+                <div id="health-hunger">
+                    <div id="health-bar">
+                        <div class="hearts">
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                            <span class="heart full">♥</span>
+                        </div>
+                    </div>
+                    <div id="hunger-bar">
+                        <div class="hunger">
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                            <span class="drumstick full">🍖</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 채팅창 -->
+            <div id="chat-container" class="hidden">
+                <div id="chat-messages"></div>
+                <input type="text" id="chat-input" placeholder="메시지를 입력하세요..." maxlength="100">
+            </div>
+
+            <!-- 인벤토리 -->
+            <div id="inventory-screen" class="hidden">
+                <div class="inventory-container">
+                    <h2>인벤토리</h2>
+                    <div class="inventory-grid">
+                        <!-- 인벤토리 슬롯들이 JavaScript로 생성됨 -->
+                    </div>
+                    <div class="crafting-area">
+                        <h3>제작</h3>
+                        <div class="crafting-grid">
+                            <div class="crafting-slot" data-slot="craft-0"></div>
+                            <div class="crafting-slot" data-slot="craft-1"></div>
+                            <div class="crafting-slot" data-slot="craft-2"></div>
+                            <div class="crafting-slot" data-slot="craft-3"></div>
+                        </div>
+                        <div class="crafting-arrow">→</div>
+                        <div class="crafting-result">
+                            <div class="crafting-slot" data-slot="craft-result"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 게임 메뉴 (ESC) -->
+            <div id="pause-menu" class="menu hidden">
+                <div class="menu-content">
+                    <h2>게임 메뉴</h2>
+                    <div class="menu-buttons">
+                        <button id="resume-btn" class="menu-btn">게임 계속</button>
+                        <button id="save-world-btn" class="menu-btn">세계 저장</button>
+                        <button id="game-settings-btn" class="menu-btn">설정</button>
+                        <button id="quit-btn" class="menu-btn">게임 종료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 설정 메뉴 -->
+        <div id="settings-menu" class="menu hidden">
+            <div class="menu-content">
+                <h2>설정</h2>
+                <div class="settings-options">
+                    <div class="setting-item">
+                        <label for="render-distance">렌더 거리:</label>
+                        <input type="range" id="render-distance" min="2" max="16" value="8">
+                        <span id="render-distance-value">8</span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="fov">시야각 (FOV):</label>
+                        <input type="range" id="fov" min="30" max="120" value="70">
+                        <span id="fov-value">70</span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="mouse-sensitivity">마우스 감도:</label>
+                        <input type="range" id="mouse-sensitivity" min="1" max="10" value="5">
+                        <span id="mouse-sensitivity-value">5</span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="sound-volume">소리 크기:</label>
+                        <input type="range" id="sound-volume" min="0" max="100" value="50">
+                        <span id="sound-volume-value">50</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="show-coords" checked>
+                            좌표 표시
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="show-fps" checked>
+                            FPS 표시
+                        </label>
+                    </div>
+                </div>
+                <div class="menu-buttons">
+                    <button id="settings-done-btn" class="menu-btn">완료</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 로딩 화면 -->
+        <div id="loading-screen" class="hidden">
+            <div class="loading-content">
+                <h2>세계 생성 중...</h2>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+                <p id="loading-text">지형 생성 중...</p>
+            </div>
+        </div>
+
+        <!-- 컨트롤 도움말 -->
+        <div id="controls-help" class="help-overlay hidden">
+            <div class="help-content">
+                <h3>조작법</h3>
+                <div class="controls-list">
+                    <div class="control-item"><strong>WASD</strong> - 이동</div>
+                    <div class="control-item"><strong>마우스</strong> - 시점 변경</div>
+                    <div class="control-item"><strong>좌클릭</strong> - 블록 파괴</div>
+                    <div class="control-item"><strong>우클릭</strong> - 블록 설치</div>
+                    <div class="control-item"><strong>스페이스바</strong> - 점프</div>
+                    <div class="control-item"><strong>Shift</strong> - 웅크리기</div>
+                    <div class="control-item"><strong>Ctrl</strong> - 달리기</div>
+                    <div class="control-item"><strong>1-9</strong> - 아이템 선택</div>
+                    <div class="control-item"><strong>E</strong> - 인벤토리</div>
+                    <div class="control-item"><strong>T</strong> - 채팅</div>
+                    <div class="control-item"><strong>F3</strong> - 디버그 정보</div>
+                    <div class="control-item"><strong>ESC</strong> - 메뉴</div>
+                </div>
+                <button id="close-help-btn" class="menu-btn">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 파일들 -->
+    <script src="js/utils.js"></script>
+    <script src="js/noise.js"></script>
+    <script src="js/blocks.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/crafting.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+/* 블록 렌더링 및 3D 스타일 */
+
+.block {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease;
+}
+
+.block:hover {
+    transform: scale(1.05);
+}
+
+/* 블록 면 스타일 */
+.block-face {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 각 면의 3D 변환 */
+.block-face.front {
+    transform: translateZ(16px);
+}
+
+.block-face.back {
+    transform: rotateY(180deg) translateZ(16px);
+}
+
+.block-face.left {
+    transform: rotateY(-90deg) translateZ(16px);
+}
+
+.block-face.right {
+    transform: rotateY(90deg) translateZ(16px);
+}
+
+.block-face.top {
+    transform: rotateX(90deg) translateZ(16px);
+}
+
+.block-face.bottom {
+    transform: rotateX(-90deg) translateZ(16px);
+}
+
+/* 블록 타입별 텍스처 (기본 색상으로 대체) */
+.grass-block .block-face.top {
+    background: linear-gradient(45deg, #7CB342 25%, #8BC34A 25%, #8BC34A 50%, #7CB342 50%, #7CB342 75%, #8BC34A 75%);
+    background-size: 4px 4px;
+}
+
+.grass-block .block-face:not(.top) {
+    background: linear-gradient(45deg, #8D6E63 25%, #A1887F 25%, #A1887F 50%, #8D6E63 50%, #8D6E63 75%, #A1887F 75%);
+    background-size: 4px 4px;
+}
+
+.stone-block .block-face {
+    background: linear-gradient(45deg, #757575 25%, #9E9E9E 25%, #9E9E9E 50%, #757575 50%, #757575 75%, #9E9E9E 75%);
+    background-size: 4px 4px;
+}
+
+.dirt-block .block-face {
+    background: linear-gradient(45deg, #8D6E63 25%, #A1887F 25%, #A1887F 50%, #8D6E63 50%, #8D6E63 75%, #A1887F 75%);
+    background-size: 4px 4px;
+}
+
+.wood-block .block-face.top,
+.wood-block .block-face.bottom {
+    background: radial-gradient(circle, #8D6E63 30%, #A1887F 70%);
+}
+
+.wood-block .block-face:not(.top):not(.bottom) {
+    background: linear-gradient(to bottom, #8D6E63 0%, #A1887F 50%, #8D6E63 100%);
+}
+
+.cobblestone-block .block-face {
+    background: linear-gradient(45deg, #616161 25%, #757575 25%, #757575 50%, #616161 50%, #616161 75%, #757575 75%);
+    background-size: 6px 6px;
+}
+
+.sand-block .block-face {
+    background: linear-gradient(45deg, #FFD54F 25%, #FFF176 25%, #FFF176 50%, #FFD54F 50%, #FFD54F 75%, #FFF176 75%);
+    background-size: 3px 3px;
+}
+
+.water-block .block-face {
+    background: linear-gradient(45deg, rgba(33, 150, 243, 0.8) 25%, rgba(100, 181, 246, 0.8) 25%);
+    background-size: 8px 8px;
+    animation: water-flow 2s ease-in-out infinite;
+}
+
+@keyframes water-flow {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(1px); }
+}
+
+.lava-block .block-face {
+    background: linear-gradient(45deg, #FF5722 25%, #FF9800 25%, #FF9800 50%, #FF5722 50%, #FF5722 75%, #FF9800 75%);
+    background-size: 4px 4px;
+    animation: lava-glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes lava-glow {
+    0% { box-shadow: inset 0 0 5px rgba(255, 87, 34, 0.5); }
+    100% { box-shadow: inset 0 0 15px rgba(255, 152, 0, 0.8); }
+}
+
+.glass-block .block-face {
+    background: linear-gradient(45deg, rgba(224, 247, 250, 0.9) 25%, rgba(179, 229, 252, 0.9) 25%);
+    background-size: 2px 2px;
+    border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.leaves-block .block-face {
+    background: linear-gradient(45deg, #4CAF50 25%, #66BB6A 25%, #66BB6A 50%, #4CAF50 50%, #4CAF50 75%, #66BB6A 75%);
+    background-size: 3px 3px;
+    opacity: 0.9;
+}
+
+/* 블록 파괴 애니메이션 */
+.block.breaking {
+    animation: block-break 0.3s ease-in-out;
+}
+
+@keyframes block-break {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0) rotate(15deg);
+        opacity: 0;
+    }
+}
+
+/* 블록 설치 애니메이션 */
+.block.placing {
+    animation: block-place 0.2s ease-out;
+}
+
+@keyframes block-place {
+    0% {
+        transform: scale(0) rotateY(0deg);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1) rotateY(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1) rotateY(360deg);
+        opacity: 1;
+    }
+}
+
+/* 블록 하이라이트 (바라보고 있는 블록) */
+.block.highlighted {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+    transform: scale(1.02);
+}
+
+.block.highlighted::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
+
+/* 블록 그림자 */
+.block::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 2px;
+    width: 32px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotateX(90deg) translateZ(-1px);
+    z-index: -1;
+}
+
+/* 블록 데미지 텍스처 오버레이 */
+.block.damage-1::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(0, 0, 0, 0.1) 70%);
+    pointer-events: none;
+}
+
+.block.damage-2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 20%, rgba(0, 0, 0, 0.2) 80%);
+    pointer-events: none;
+}
+
+.block.damage-3::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 10%, rgba(0, 0, 0, 0.3) 90%);
+    pointer-events: none;
+}
+
+/* 특수 블록 효과 */
+.ore-block .block-face {
+    position: relative;
+}
+
+.ore-block .block-face::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    animation: ore-sparkle 2s ease-in-out infinite;
+}
+
+.coal-ore .block-face::after {
+    background: radial-gradient(circle, #424242 30%, transparent 70%);
+}
+
+.iron-ore .block-face::after {
+    background: radial-gradient(circle, #FFC107 30%, transparent 70%);
+}
+
+.gold-ore .block-face::after {
+    background: radial-gradient(circle, #FFD700 30%, transparent 70%);
+}
+
+.diamond-ore .block-face::after {
+    background: radial-gradient(circle, #00BCD4 30%, transparent 70%);
+}
+
+@keyframes ore-sparkle {
+    0%, 100% { 
+        opacity: 0.6; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2);
+    }
+}
+
+/* 블록 파티클 효과 */
+.block-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.block-particle.break {
+    animation: particle-break 0.5s ease-out forwards;
+}
+
+@keyframes particle-break {
+    0% {
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5) translate(var(--dx, 20px), var(--dy, -30px));
+        opacity: 0;
+    }
+}
