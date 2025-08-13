@@ -2,10 +2,12 @@
 
 This file contains project-specific information and preferences for Claude Code.
 
-##코드 스타일 
-- 모든 함수는 화살표 함수로 작성
-- 세미콜론 항상 사용
-- 들여쓰기는 2칸 
+## 코딩스타일
+### TypeScript/JavaScript
+- 함수명: camelCase
+- 컴포넌트명: PascalCase  
+- 상수: UPPER_SNAKE_CASE
+- 파일명: kebab-case.ts
 
 ## Project Overview
 - **Project Type**: Development workspace
