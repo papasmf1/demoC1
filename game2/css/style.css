@@ -1,0 +1,670 @@
+/* Snake Game CSS - 뱀게임 스타일 */
+
+/* 기본 리셋 및 폰트 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', monospace;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 게임 컨테이너 */
+#game-container {
+    width: 100%;
+    max-width: 800px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* 게임 헤더 */
+#game-header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #4CAF50;
+}
+
+.game-title {
+    font-size: 16px;
+    color: #4CAF50;
+    text-shadow: 0 0 10px #4CAF50;
+}
+
+.score-container {
+    display: flex;
+    gap: 20px;
+}
+
+.score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 8px;
+}
+
+.score-label {
+    color: #cccccc;
+    margin-bottom: 4px;
+}
+
+#current-score, #high-score, #current-level {
+    color: #FFD700;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* 화면 전환 */
+.screen {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+/* 메인 메뉴 */
+#main-menu {
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(0, 50, 0, 0.8));
+}
+
+.menu-content {
+    text-align: center;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 15px;
+    border: 2px solid #4CAF50;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.3);
+}
+
+.menu-title {
+    font-size: 24px;
+    color: #4CAF50;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px #4CAF50;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.menu-subtitle {
+    font-size: 8px;
+    color: #cccccc;
+    margin-bottom: 30px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.menu-btn {
+    background: linear-gradient(45deg, #2E7D32, #4CAF50);
+    border: 2px solid #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-btn:hover {
+    background: linear-gradient(45deg, #4CAF50, #66BB6A);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.menu-btn:active {
+    transform: translateY(0);
+}
+
+.menu-btn.primary {
+    background: linear-gradient(45deg, #FF6B00, #FF8F00);
+    border-color: #FF8F00;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.menu-btn.primary:hover {
+    background: linear-gradient(45deg, #FF8F00, #FFA726);
+}
+
+/* 난이도 선택 */
+.difficulty-selector h3 {
+    font-size: 12px;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.difficulty-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.difficulty-btn {
+    background: #333;
+    border: 2px solid #666;
+    color: white;
+    padding: 8px 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover {
+    border-color: #4CAF50;
+    background: #444;
+}
+
+.difficulty-btn.active {
+    background: #4CAF50;
+    border-color: #66BB6A;
+    color: white;
+}
+
+/* 게임 화면 */
+#game-screen {
+    background: rgba(0, 20, 0, 0.9);
+    flex-direction: column;
+    padding: 20px;
+}
+
+.game-board-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#game-canvas {
+    background: #000;
+    border: 4px solid #4CAF50;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+}
+
+/* 게임 오버레이 */
+#game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.overlay-content {
+    text-align: center;
+    background: linear-gradient(45deg, #1a1a1a, #333);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid #FF5722;
+    box-shadow: 0 0 30px rgba(255, 87, 34, 0.5);
+}
+
+#overlay-title {
+    font-size: 16px;
+    color: #FF5722;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px #FF5722;
+}
+
+#overlay-message {
+    font-size: 10px;
+    color: #cccccc;
+    margin-bottom: 20px;
+}
+
+#final-score {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.overlay-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* 게임 컨트롤 */
+.game-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: rgba(76, 175, 80, 0.2);
+    transform: translateY(-1px);
+}
+
+/* 모바일 방향키 */
+.mobile-controls {
+    display: none;
+}
+
+.direction-pad {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.middle-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+}
+
+.center-space {
+    grid-column: 2;
+}
+
+.dir-btn {
+    background: linear-gradient(45deg, #333, #555);
+    border: 2px solid #4CAF50;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.dir-btn:hover, .dir-btn:active {
+    background: linear-gradient(45deg, #4CAF50, #66BB6A);
+    transform: scale(0.95);
+}
+
+#up-btn, #down-btn {
+    grid-column: 2;
+}
+
+/* 설정 화면 */
+.settings-content, .controls-content, .about-content {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid #4CAF50;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.settings-content h2, .controls-content h2, .about-content h2 {
+    font-size: 16px;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.setting-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 10px;
+}
+
+.setting-group label {
+    color: #cccccc;
+    flex: 1;
+}
+
+.setting-group select, .setting-group input[type="range"] {
+    background: #333;
+    border: 1px solid #666;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+}
+
+.setting-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #4CAF50;
+}
+
+.setting-group input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#speed-value {
+    color: #4CAF50;
+    margin-left: 10px;
+}
+
+.settings-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* 조작법 화면 */
+.controls-section {
+    margin-bottom: 25px;
+}
+
+.controls-section h3 {
+    font-size: 12px;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.control-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.control-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+.key {
+    background: #333;
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid #666;
+    color: #4CAF50;
+}
+
+.action {
+    color: #cccccc;
+}
+
+.rules-list {
+    list-style: none;
+    font-size: 10px;
+    color: #cccccc;
+}
+
+.rules-list li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+/* 정보 화면 */
+.about-section {
+    text-align: center;
+}
+
+.about-section h3 {
+    font-size: 14px;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.about-section p {
+    font-size: 10px;
+    color: #cccccc;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.feature-list h4 {
+    font-size: 12px;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.feature-list ul {
+    list-style: none;
+    text-align: left;
+    font-size: 8px;
+    color: #cccccc;
+}
+
+.feature-list li {
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.feature-list li::before {
+    content: "🐍";
+    position: absolute;
+    left: 0;
+}
+
+.version-info {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* 로딩 화면 */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.snake-loader {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.snake-segment {
+    width: 15px;
+    height: 15px;
+    background: #4CAF50;
+    border-radius: 3px;
+    animation: snake-move 1.5s ease-in-out infinite;
+}
+
+.snake-segment:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.snake-segment:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.snake-segment:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.loading-content p {
+    font-size: 12px;
+    color: #4CAF50;
+}
+
+/* 애니메이션 */
+@keyframes pulse {
+    0%, 100% {
+        text-shadow: 0 0 20px #4CAF50;
+    }
+    50% {
+        text-shadow: 0 0 30px #4CAF50, 0 0 40px #4CAF50;
+    }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 143, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 143, 0, 0.8);
+    }
+}
+
+@keyframes snake-move {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: block;
+    }
+
+    .menu-title {
+        font-size: 18px;
+    }
+
+    .menu-btn {
+        font-size: 8px;
+        padding: 10px 20px;
+    }
+
+    .difficulty-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #game-canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .game-controls {
+        flex-wrap: wrap;
+    }
+
+    .control-btn {
+        font-size: 6px;
+        padding: 6px 10px;
+    }
+
+    .settings-content, .controls-content, .about-content {
+        padding: 20px;
+        font-size: 8px;
+    }
+
+    .control-item {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    #game-header {
+        padding: 10px;
+    }
+
+    .game-title {
+        font-size: 12px;
+    }
+
+    .score-container {
+        gap: 10px;
+    }
+
+    .score-item {
+        font-size: 6px;
+    }
+
+    #current-score, #high-score, #current-level {
+        font-size: 8px;
+    }
+
+    .menu-content {
+        padding: 20px;
+    }
+
+    .menu-title {
+        font-size: 14px;
+    }
+
+    .menu-btn {
+        font-size: 6px;
+        padding: 8px 16px;
+    }
+}
+
+/* 유틸리티 클래스 */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

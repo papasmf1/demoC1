@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(45deg, #000011, #001122, #000033);
+    color: #00FF00;
+    overflow: hidden;
+    user-select: none;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #000033 0%, #000011 70%, #000000 100%);
+}
+
+.game-header {
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #001133, #002255, #001133);
+    border: 2px solid #00FFFF;
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00FF00;
+}
+
+.score-panel {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.score, .lives, .level {
+    color: #00FF00;
+}
+
+.high-score {
+    color: #FFFF00;
+    font-size: 14px;
+}
+
+.game-screen {
+    position: relative;
+    border: 3px solid #00FFFF;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 
+        0 0 20px #00FFFF,
+        inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+#gameCanvas {
+    display: block;
+    background: linear-gradient(180deg, #000022 0%, #000033 50%, #001122 100%);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.title {
+    font-size: 48px;
+    color: #FFFF00;
+    text-shadow: 
+        0 0 20px #FFFF00,
+        0 0 40px #FF8800;
+    margin-bottom: 20px;
+    letter-spacing: 8px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #00FFFF;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px #00FFFF;
+}
+
+.controls {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.controls p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #AAAAAA;
+}
+
+.start-button, .restart-button {
+    background: linear-gradient(45deg, #FF0066, #FF3399);
+    color: white;
+    border: 2px solid #FF0066;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 0 20px rgba(255, 0, 102, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.start-button:hover, .restart-button:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 30px rgba(255, 0, 102, 0.8),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.game-over-title {
+    font-size: 36px;
+    color: #FF0000;
+    text-shadow: 
+        0 0 20px #FF0000,
+        0 0 40px #FF4444;
+    margin-bottom: 20px;
+    animation: blink 1s ease-in-out infinite;
+}
+
+.final-score {
+    font-size: 20px;
+    color: #FFFF00;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #FFFF00;
+}
+
+.pause-title {
+    font-size: 36px;
+    color: #00FFFF;
+    text-shadow: 0 0 20px #00FFFF;
+    margin-bottom: 20px;
+}
+
+.game-footer {
+    width: 600px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #001133, #002255, #001133);
+    border: 2px solid #00FFFF;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #AAAAAA;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 
+            0 0 20px #FFFF00,
+            0 0 40px #FF8800;
+    }
+    to {
+        text-shadow: 
+            0 0 30px #FFFF00,
+            0 0 60px #FF8800,
+            0 0 80px #FFAA00;
+    }
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0.3;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-header, .game-footer {
+        width: 100%;
+        max-width: 600px;
+    }
+    
+    #gameCanvas {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+    }
+    
+    .title {
+        font-size: 36px;
+        letter-spacing: 4px;
+    }
+    
+    .score-panel {
+        gap: 10px;
+        font-size: 12px;
+    }
+}

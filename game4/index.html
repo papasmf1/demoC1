@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xevious-style Shooting Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score-panel">
+                <div class="score">SCORE: <span id="score">0</span></div>
+                <div class="lives">LIVES: <span id="lives">3</span></div>
+                <div class="level">LEVEL: <span id="level">1</span></div>
+                <div class="weapon">WEAPON: <span id="weaponLevel">1</span></div>
+            </div>
+            <div class="high-score">HIGH: <span id="highScore">0</span></div>
+        </div>
+        
+        <div class="game-screen">
+            <canvas id="gameCanvas" width="600" height="800"></canvas>
+            
+            <div id="startScreen" class="overlay">
+                <div class="title">XEVIOUS</div>
+                <div class="subtitle">VERTICAL SHOOTING GAME</div>
+                <div class="controls">
+                    <p>← → : Move Left/Right</p>
+                    <p>↑ ↓ : Move Up/Down</p>
+                    <p>SPACE : Fire</p>
+                    <p>ENTER : Start Game</p>
+                </div>
+                <button id="startBtn" class="start-button">START GAME</button>
+            </div>
+            
+            <div id="gameOverScreen" class="overlay hidden">
+                <div class="game-over-title">GAME OVER</div>
+                <div class="final-score">FINAL SCORE: <span id="finalScore">0</span></div>
+                <button id="restartBtn" class="restart-button">PLAY AGAIN</button>
+            </div>
+            
+            <div id="pauseScreen" class="overlay hidden">
+                <div class="pause-title">PAUSED</div>
+                <p>Press ENTER to continue</p>
+            </div>
+        </div>
+        
+        <div class="game-footer">
+            <div class="controls-info">
+                <span>P: Pause | R: Restart | M: Mute</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
